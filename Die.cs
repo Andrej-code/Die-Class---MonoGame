@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Die_Class
+namespace Die_Class__MonoGame
 {
     public class Die
     {
         private Random _generator;
-        private int _roll;
+        private int _roll, _randomFace, _frame;
         private List<Texture2D> _faces;
         private Rectangle _location;
 
@@ -22,7 +22,8 @@ namespace Die_Class
 
             _faces = faces;
             _location = location;
-            
+
+            _frame = 1;
         }
 
         public int Roll 
@@ -53,9 +54,29 @@ namespace Die_Class
             }
         }
 
-        public void DrawRoll(SpriteBatch spriteBatch)
+        public void DrawRoll (SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_faces[_roll - 1], _location, Color.White);
+            if (_frame > 0)
+            {
+                _frame++;
+                if (_frame % 10 == 0)
+                {
+
+                    _randomFace = _generator.Next(_faces.Count);
+
+                    if (_frame == 60)
+                    {
+                        _frame = 0;
+                    }
+
+                    spriteBatch.Draw(_faces[_randomFace], _location, Color.White);
+                }
+
+            }
+            else
+            {
+                spriteBatch.Draw(_faces[_roll - 1], _location, Color.White);
+            }
         }
 
 
